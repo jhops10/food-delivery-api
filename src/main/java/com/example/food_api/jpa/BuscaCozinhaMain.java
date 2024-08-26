@@ -3,6 +3,7 @@ package com.example.food_api.jpa;
 
 import com.example.food_api.FoodApiApplication;
 import com.example.food_api.domain.model.Cozinha;
+import com.example.food_api.domain.repository.CozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -16,9 +17,9 @@ public class BuscaCozinhaMain {
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+        CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-        Cozinha cozinha = cadastroCozinha.buscar(1L);
+        Cozinha cozinha = cozinhaRepository.buscar(1L);
 
         System.out.println(cozinha.getNome());
     }
