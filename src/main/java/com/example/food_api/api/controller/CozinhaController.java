@@ -4,6 +4,7 @@ import com.example.food_api.domain.model.Cozinha;
 import com.example.food_api.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,6 @@ public class CozinhaController {
         return cozinhaRepository.listar();
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
         Cozinha cozinha =  cozinhaRepository.buscar(id);
@@ -32,5 +32,11 @@ public class CozinhaController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+        return cozinhaRepository.salvar(cozinha);
     }
 }
