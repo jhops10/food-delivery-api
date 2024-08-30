@@ -2,6 +2,7 @@ package com.example.food_api.api.controller;
 
 import com.example.food_api.domain.model.Cozinha;
 import com.example.food_api.domain.repository.CozinhaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -39,4 +40,19 @@ public class CozinhaController {
     public Cozinha adicionar(@RequestBody Cozinha cozinha) {
         return cozinhaRepository.salvar(cozinha);
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+        Cozinha cozinhaAtual = cozinhaRepository.buscar(id);
+
+        if (cozinhaAtual != null) {
+            BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+            cozinhaAtual = cozinhaRepository.salvar(cozinhaAtual);
+            return ResponseEntity.ok(cozinhaAtual);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+
 }
