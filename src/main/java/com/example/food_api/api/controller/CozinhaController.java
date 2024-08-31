@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class CozinhaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
-        Cozinha cozinha =  cozinhaRepository.buscar(id);
+        Cozinha cozinha = cozinhaRepository.buscar(id);
 
         if (cozinha != null) {
             return ResponseEntity.ok(cozinha);
@@ -54,5 +55,22 @@ public class CozinhaController {
         return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Cozinha> apagar(@PathVariable Long id) {
+        try {
+            Cozinha cozinha = cozinhaRepository.buscar(id);
+
+            if (cozinha != null) {
+                cozinhaRepository.remover(cozinha);
+                return ResponseEntity.noContent().build();
+
+            }
+
+            return ResponseEntity.notFound().build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+    }
 
 }
