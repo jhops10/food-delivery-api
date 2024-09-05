@@ -1,13 +1,11 @@
 package com.example.food_api.domain.repository;
 
 import com.example.food_api.domain.model.Estado;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
-public interface EstadoRepository {
+@Repository
+public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
-    List<Estado> listar();
-    Estado buscar(Long id);
-    Estado salvar(Estado estado);
-    void remover(Long id);
 }
