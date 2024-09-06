@@ -10,7 +10,7 @@ import java.util.List;
 public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
 
 
-   //List<Cozinha> consultarPorNome(String nome);
+   List<Cozinha> findTodasByNome(String nome);
 
 
 }
