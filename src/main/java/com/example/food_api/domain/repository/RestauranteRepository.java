@@ -2,6 +2,7 @@ package com.example.food_api.domain.repository;
 
 import com.example.food_api.domain.model.Restaurante;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -14,7 +15,10 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
 
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
-    List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinhaId);
+    @Query("from Restaurante where nome like %:nome% and cozinha.id = :cozinhaId")
+    List<Restaurante> consultarPorNome(String nome, Long cozinhaId);
+
+    //List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinhaId);
 
     Optional<Restaurante> findFirstByNomeContaining(String nome);
 
