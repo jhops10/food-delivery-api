@@ -1,4 +1,4 @@
-package com.example.food_api.infrastructure;
+package com.example.food_api.infrastructure.repository;
 
 import com.example.food_api.domain.model.Restaurante;
 import com.example.food_api.domain.repository.RestauranteRepositoryQueries;
@@ -14,7 +14,6 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Repository
