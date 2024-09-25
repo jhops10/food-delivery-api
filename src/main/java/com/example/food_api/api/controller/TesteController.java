@@ -4,8 +4,6 @@ import com.example.food_api.domain.model.Cozinha;
 import com.example.food_api.domain.model.Restaurante;
 import com.example.food_api.domain.repository.CozinhaRepository;
 import com.example.food_api.domain.repository.RestauranteRepository;
-import com.example.food_api.infrastructure.spec.RestauranteComFreteGratisSpec;
-import com.example.food_api.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.food_api.infrastructure.spec.RestauranteSpecs.comFreteGratis;
+import static com.example.food_api.infrastructure.spec.RestauranteSpecs.comNomeSemelhante;
 
 @RestController
 @RequestMapping(value = "/teste")
@@ -27,17 +28,17 @@ public class TesteController {
     private RestauranteRepository restauranteRepository;
 
     @GetMapping("/cozinhas/por-nome")
-    public List<Cozinha> cozinhasPorNome (@RequestParam("nome") String nome) {
+    public List<Cozinha> cozinhasPorNome(@RequestParam("nome") String nome) {
         return cozinhaRepository.findTodasByNomeContaining(nome);
     }
 
     @GetMapping("/restaurantes/por-taxa-frete")
-    public List<Restaurante> restaurantesPorTaxaFrete (BigDecimal taxaInicial, BigDecimal taxaFinal) {
+    public List<Restaurante> restaurantesPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal) {
         return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
     }
 
     @GetMapping("/restaurantes/por-nome")
-    public List<Restaurante> restaurantesPorNome (String nome, Long cozinhaId) {
+    public List<Restaurante> restaurantesPorNome(String nome, Long cozinhaId) {
         return restauranteRepository.consultarPorNome(nome, cozinhaId);
     }
 
@@ -52,18 +53,16 @@ public class TesteController {
     }
 
     @GetMapping("/cozinhas/existe-por-nome")
-    public boolean cozinhaExists (@RequestParam("nome") String nome) {
+    public boolean cozinhaExists(@RequestParam("nome") String nome) {
         return cozinhaRepository.existsByNome(nome);
     }
 
     @GetMapping("/restaurantes/com-frete-gratis")
-    public List<Restaurante> restaurantesComFreteGratis (String nome) {
-        var comFreteGratis = new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
 
-        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+        return restauranteRepository.findAll(comFreteGratis()
+                .and(comNomeSemelhante(nome)));
     }
-
 
 
 
